@@ -6,10 +6,9 @@ config();
 const SECRET = process.env.SECRET;
 
 export const authenticateJwt = (req, res, next) => {
-    const authToken = req.cookies.token;
-    //const authHeader = req.headers.auth;
-    if (authToken) {
-      const token = authToken;
+    const authHeader = req.headers.token;
+    if (authHeader) {
+      const token = authHeader;
       jwt.verify(token, SECRET, (err, user) => {
         if (err) {
           return res.sendStatus(403);

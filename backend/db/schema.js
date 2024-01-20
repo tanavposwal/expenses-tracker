@@ -5,7 +5,7 @@ mongoose.connect('mongodb+srv://db:hbZ4T9VfB2UqP@cluster0.puwtraz.mongodb.net/ex
 // Define mongoose schemas
 // shape of object in collection
 const userSchema = new mongoose.Schema({
-    username: { type: String },
+    fullname: { type: String },
     email: { type: String },
     password: { type: String },
     transaction: { type: Array }
@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
     amount: int
     type: enum["income", "expense"]
     brief: string
+    date: string
 }] */
 
 // Define mongoose models

@@ -1,35 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Toaster } from 'react-hot-toast';
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import Signup from "./components/Signup";
+import Guest from "./components/Guest";
+import Logout from "./components/Logout";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [logged, setLogged] = useState(false);
+
+  const getToken = () => {
+    const cookieName = "token";
+    const cookieValue = document.cookie
+      .split(";")
+      .map((cookie) => cookie.trim())
+      .find((cookie) => cookie.startsWith(`${cookieName}=`))
+      ?.split("=")[1];
+    return cookieValue;
+  };
+
+  useEffect(()=>{
+    if(getToken() != ""){
+      setLogged(true)
+    } else {
+      setLogged(false)
+    }
+  })
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+
+    <Router>
+      <div className="App flex flex-col gap-5">
+        <Toaster 
+        position="bottom-right"
+        reverseOrder={false} />
+        <Navbar logged={logged} />
+        <Routes>
+          <Route exact path="/" element={logged ? <Home /> : <Guest />}></Route>
+          <Route exact path="/login" element={<Login setLogged={setLogged} />}></Route>
+          <Route exact path="/signup" element={<Signup/>}></Route>
+          <Route exact path="/logout" element={<Logout/>}></Route>
+        </Routes>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </Router>
+
+  );
 }
 
-export default App
+export default App;
