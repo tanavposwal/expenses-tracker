@@ -38,11 +38,14 @@ function App() {
         position="bottom-right"
         reverseOrder={false} />
         <Navbar logged={logged} />
+        <br />
+        <br />
+        <br />
         <Routes>
           <Route exact path="/" element={logged ? <Home /> : <Guest />}></Route>
           <Route exact path="/login" element={<Login setLogged={setLogged} />}></Route>
           <Route exact path="/signup" element={<Signup/>}></Route>
-          <Route exact path="/logout" element={<Logout/>}></Route>
+          <Route exact path="/logout" element={<Logout logged={logged} setLogged={setLogged} />}></Route>
         </Routes>
       </div>
     </Router>

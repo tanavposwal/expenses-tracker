@@ -1,6 +1,11 @@
 import { mongoose } from "mongoose";
+import { config } from 'dotenv';
 
-mongoose.connect('mongodb+srv://db:hbZ4T9VfB2UqP@cluster0.puwtraz.mongodb.net/expense-tracker', { useNewUrlParser: true, useUnifiedTopology: true, dbName: "expense-tracker" });
+config();
+
+const URL = process.env.URL;
+
+mongoose.connect(URL, { dbName: "expense-tracker" });
 
 // Define mongoose schemas
 // shape of object in collection

@@ -1,9 +1,13 @@
 import { useEffect } from "react"
+import { useNavigate } from "react-router-dom";
 
-export default function Logout() {
+export default function Logout({ logged, setLogged }) {
+    const navigate = useNavigate();
 
     useEffect(() => {
         document.cookie = `token=; max-age=900000; path=/;`;
+        setLogged(!logged)
+        navigate("/")
     })
 
     return (

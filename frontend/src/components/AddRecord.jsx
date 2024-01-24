@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 
 export default function AddRecord({ reload }) {
   const [transData, setTransData] = useState({
-    amount: "",
+    amount: 0,
     type: "",
     brief: "",
   });
@@ -68,7 +68,7 @@ export default function AddRecord({ reload }) {
       className="card flex  card-bordered p-5"
     >
       <div className="flex w-full">
-        <label className="flex-1 pr-6 form-control">
+        <label className="flex-1 md:pr-6 sm:pr-3 pr-2 form-control">
           <div className="label">
             {isExpense ? (
               <span className="label-text">Expense</span>
@@ -92,7 +92,7 @@ export default function AddRecord({ reload }) {
             <span className="label-text">Amount...</span>
           </div>
           <input
-            type="text"
+            type="number"
             name="amount"
             autoComplete="off"
             value={transData.amount}

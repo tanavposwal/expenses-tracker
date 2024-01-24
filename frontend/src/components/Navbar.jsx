@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import DP from "./DP";
 
 export default function Home({ logged }) {
   return (
-    <div className="navbar bg-base-100 shadow-lg">
+    <div className="navbar fixed top-0 z-[999] bg-base-100 shadow-lg">
       <div className="flex-1 pl-6">
         <Link to="/" className="btn btn-ghost text-xl text-white">
           Expense-tracker
@@ -12,9 +10,9 @@ export default function Home({ logged }) {
       </div>
       <div className="flex-none">
         {logged ? (
-          <div className="flex gap-1 items-center justify-center">
-          <DP name="tanav poswal" />
-          <Link to="/logout" className="btn btn-ghost mr-4">Logout</Link>
+          <div className="flex gap-1 items-center justify-center mr-6">
+          <img className="w-10 h-10" src="../../../public/user.png" />
+          <Link to="/logout" className="btn btn-ghost ml-2">Logout</Link>
           </div>
         ) : (
           <div className="mr-6">

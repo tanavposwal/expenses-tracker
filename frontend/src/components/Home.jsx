@@ -68,12 +68,11 @@ export default function Home() {
   return (
     <div>
       <div className="w-screen px-10 flex flex-col gap-3 mb-5">
-        <AddRecord reload={getTransac} />    
-
+        <AddRecord reload={getTransac} /> 
         <div className="card card-bordered p-3">
-        {[...transaction].reverse().map((trans) => (
-          <Record data={trans} />
-        ))}
+        {transaction ? [...transaction].reverse().map((trans, id) => (
+          <Record key={id} token={getToken} data={trans} id={transaction.length - id - 1} reload={getTransac} />
+        )) : "loading..."}
         </div>
       </div>
     </div>
