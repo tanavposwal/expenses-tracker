@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
 
 export default function Login({ setLogged }) {
   const navigate = useNavigate();
@@ -23,7 +24,7 @@ export default function Login({ setLogged }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    fetch("http://localhost:3000/user/login", {
+    fetch(BACKEND_URL+"user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

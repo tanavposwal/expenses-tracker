@@ -109,7 +109,7 @@ app.delete('/user/entry/:id', authenticateJwt, async (req,res) => {
       console.error(error);
     }
 
-  res.json({ message: req.params.id+' deleted!' });
+  res.json({ message: 'Transaction deleted!' });
 })
 
 app.listen(3000, () => console.log('Server running on port http://localhost:3000/'));

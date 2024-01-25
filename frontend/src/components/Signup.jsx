@@ -1,6 +1,7 @@
 import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export default function Signup() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password == formData.confirmpass) {  
-    fetch("http://localhost:3000/user/signup", {
+    fetch(BACKEND_URL+"user/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

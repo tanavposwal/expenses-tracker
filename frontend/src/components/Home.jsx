@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Record from "./Record";
 import AddRecord from "./AddRecord";
+const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
 
 export default function Home() {
 
@@ -8,7 +9,7 @@ export default function Home() {
 
   const getTransac = async () => {
     try {
-      const response = await fetch("http://localhost:3000/user/entry", {
+      const response = await fetch(BACKEND_URL+"user/entry", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

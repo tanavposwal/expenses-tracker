@@ -1,7 +1,10 @@
+import toast from 'react-hot-toast';
+const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
+
 export default function Record(props) {
   const handleDelete = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/user/entry/${props.id}`, {
+      const response = await fetch(BACKEND_URL+"user/entry/"+props.id, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -10,7 +13,7 @@ export default function Record(props) {
       });
 
       if (response.ok) {
-        console.log("deleted")
+        toast.success(response.json().message)
         props.reload()
       } else {
         console.log(response)

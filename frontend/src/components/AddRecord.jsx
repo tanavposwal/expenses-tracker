@@ -1,5 +1,6 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
 
 export default function AddRecord({ reload }) {
   const [transData, setTransData] = useState({
@@ -36,7 +37,7 @@ export default function AddRecord({ reload }) {
   const handleSubmit = async () => {
     if (transData.brief != "" || transData.amount != "") {
       try {
-        const response = await fetch("http://localhost:3000/user/entry", {
+        const response = await fetch(BACKEND_URL+"user/entry", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
