@@ -68,7 +68,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="w-screen px-10 flex flex-col gap-3 mb-5">
+      <div className="w-screen md:px-10 sm:px-6 px-3 flex flex-col gap-3 mb-5">
         <AddRecord reload={getTransac} /> 
         <div className="card card-bordered p-3">
         {transaction ? [...transaction].reverse().map((trans, id) => (

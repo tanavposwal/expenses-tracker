@@ -66,11 +66,11 @@ export default function AddRecord({ reload }) {
   return (
     <form
       onSubmit={(e) => e.preventDefault()}
-      className="card flex  card-bordered p-5"
+      className="card flex card-bordered sm:p-5 p-2"
     >
       <div className="flex w-full">
-        <label className="flex-1 md:pr-6 sm:pr-3 pr-2 form-control">
-          <div className="label">
+        <label className="flex-1 md:pr-6 sm:pr-3 pr-1 form-control">
+          <div className="label py-0">
             {isExpense ? (
               <span className="label-text">Expense</span>
             ) : (
@@ -89,7 +89,7 @@ export default function AddRecord({ reload }) {
         </label>
 
         <label className="form-control">
-          <div className="label">
+          <div className="label py-0">
             <span className="label-text">Amount...</span>
           </div>
           <input
@@ -98,7 +98,7 @@ export default function AddRecord({ reload }) {
             autoComplete="off"
             value={transData.amount}
             onChange={handleChange}
-            className="input input-accent input-sm input-bordered w-full"
+            className="input input-accent input-sm input-bordered sm:w-full w-32"
           />
           <div className="label"></div>
         </label>

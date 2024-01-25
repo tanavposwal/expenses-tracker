@@ -33,8 +33,8 @@ export default function Record(props) {
       
       {props.data.type != "expense" ? (
         <div className="flex gap-2">
-          <span className="flex justify-center font-black text-black items-center md:w-20 sm:w-10 w-10 bg-red-600">0</span>
-          <span className="flex justify-center font-black text-black items-center md:w-20 sm:w-10 w-10 bg-green-600">{props.data.amount}</span>
+          <span className="flex justify-center font-black text-black items-center md:w-20 w-16 bg-red-600">0</span>
+          <span className="flex justify-center font-black text-black items-center md:w-20 w-16 bg-green-600">{props.data.amount}</span>
         </div>
         ) : (
         <div className="flex gap-2">
