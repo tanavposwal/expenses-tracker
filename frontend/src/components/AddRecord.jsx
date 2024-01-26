@@ -36,7 +36,8 @@ export default function AddRecord({ reload }) {
     return cookieValue;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     setLoading(true);
     if (transData.brief != "" || transData.amount != "") {
       fetch(BACKEND_URL + "user/entry", {
@@ -68,7 +69,7 @@ export default function AddRecord({ reload }) {
   };
 
   return (
-    <form className="card flex card-bordered sm:p-5 p-2" >
+    <form className="card flex card-bordered sm:p-5 p-2" onSubmit={handleSubmit}>
       <div className="flex w-full">
         <label className="flex-1 md:pr-6 sm:pr-3 pr-1 form-control">
           <div className="label py-0">
