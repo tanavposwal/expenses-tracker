@@ -6,6 +6,7 @@ const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
 export default function Signup() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -24,6 +25,7 @@ export default function Signup() {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true)
     e.preventDefault();
     if (formData.password == formData.confirmpass) {  
     fetch(BACKEND_URL+"user/signup", {
@@ -35,21 +37,37 @@ export default function Signup() {
     })
       .then((response) => response.json())
       .then((data) => {
-        toast.success(data.message);
-        setFormData({
-          fullname: "",
-          email: "",
-          password: "",
-          confirmpass: "",
-        })
-        navigate('/');
+        
+        if (data.success) {
+          toast.success(data.message);
+          setFormData({
+            fullname: "",
+            email: "",
+            password: "",
+            confirmpass: "",
+          })
+          setLoading(false)
+          navigate('/');
+        } else {
+          toast.error(data.message);
+          setFormData({
+            fullname: "",
+            email: "",
+            password: "",
+            confirmpass: "",
+          })
+          setLoading(false)
+        }
+        
+        
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
         // Handle errors
       });
     } else {
-        toast.error("Password no matched")
+      setLoading(false)
+      toast.error("Password no matched")
     }
   };
 
@@ -66,7 +84,7 @@ export default function Signup() {
           placeholder="Full name"
           type="text"
           required
-          className="input input-bordered input-error min-w-[16rem]"
+          className="input input-bordered input-primary min-w-[16rem]"
           name="fullname"
           value={formData.fullname}
           onChange={handleChange}
@@ -75,7 +93,7 @@ export default function Signup() {
           placeholder="Email"
           type="email"
           required
-          className="input input-bordered input-error min-w-[16rem]"
+          className="input input-bordered input-primary min-w-[16rem]"
           name="email"
           value={formData.email}
           onChange={handleChange}
@@ -84,7 +102,7 @@ export default function Signup() {
           placeholder="Password"
           required
           type={showPassword ? 'text' : 'password'}
-          className="input input-bordered input-error min-w-[16rem] relative"
+          className="input input-bordered input-primary min-w-[16rem] relative"
           name="password"
           value={formData.password}
           onChange={handleChange}
@@ -92,7 +110,7 @@ export default function Signup() {
         <div className="absolute inset-y-0 right-8 flex items-center">
           <button
             type="button"
-            className="text-gray-400 focus:outline-none"
+            className="text-primary focus:outline-none"
             onClick={togglePasswordVisibility}
           >
             {/* Eye icon for show/hide password */}
@@ -111,16 +129,17 @@ export default function Signup() {
           placeholder="Confirm Password"
           required
           type={showPassword ? 'text' : 'password'}
-          className="input input-bordered input-error min-w-[16rem]"
+          className="input input-bordered input-primary min-w-[16rem]"
           name="confirmpass"
           value={formData.confirmpass}
           onChange={handleChange}
         />
         <button
           type="submit"
-          className="btn btn-outline btn-accent"
+          className={loading?"btn btn-outline btn-accent btn-disabled":"btn btn-outline btn-accent"}
         >
-          Submit
+          Signin
+          {loading && <span className="loading loading-spinner text-primary loading-xs"></span>}
         </button>
       </form>
     </div>
