@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Record from "./Record";
 import AddRecord from "./AddRecord";
-const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
+import {API as BACKEND_URL} from "./API"
 
 export default function Home() {
   const [transaction, setTransaction] = useState([]);
@@ -51,7 +51,7 @@ export default function Home() {
         <div className="card card-bordered p-3">
           {loading ? (
             <div className="w-full flex items-center justify-center">
-            <span class="loading loading-bars loading-sm"></span>
+            <span className="loading loading-bars loading-sm"></span>
             </div>
           ) : transaction.length != 0 ? (
             [...transaction]

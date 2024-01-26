@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .env
+src/components/API.jsx
 
 # Editor directories and files
 .vscode/*

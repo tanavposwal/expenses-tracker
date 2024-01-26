@@ -1,10 +1,10 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
+import {API as BACKEND_URL} from "./API"
 
 export default function AddRecord({ reload }) {
   const [transData, setTransData] = useState({
-    amount: 0,
+    amount: "",
     type: "",
     brief: "",
   });
@@ -38,8 +38,8 @@ export default function AddRecord({ reload }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setLoading(true);
     if (transData.brief != "" || transData.amount != "") {
+      setLoading(!loading);
       fetch(BACKEND_URL + "user/entry", {
         method: "POST",
         headers: {
@@ -56,14 +56,13 @@ export default function AddRecord({ reload }) {
             type: "",
             brief: "",
           });
+          setLoading(false);
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
         });
-      setLoading(false);
-      reload();
+        reload();
     } else {
-      setLoading(false);
       toast.error("No entry made");
     }
   };

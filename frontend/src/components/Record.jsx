@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
+import {API as BACKEND_URL} from "./API"
 
 export default function Record(props) {
 

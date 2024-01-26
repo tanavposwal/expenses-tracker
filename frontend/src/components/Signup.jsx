@@ -1,7 +1,7 @@
 import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
-const BACKEND_URL = "https://expense-tracker-api-ju1w.onrender.com/";
+import {API as BACKEND_URL} from "./API"
 
 export default function Signup() {
   const navigate = useNavigate();
