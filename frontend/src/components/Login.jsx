@@ -1,11 +1,12 @@
 import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
+import {API as BACKEND_URL} from "./API"
 
 export default function Login({ setLogged }) {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-
+  const [loading, setLoading] = useState(false)
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -21,9 +22,10 @@ export default function Login({ setLogged }) {
   };
 
   const handleSubmit = (e) => {
+    setLoading(true)
     e.preventDefault();
 
-    fetch("http://localhost:3000/user/login", {
+    fetch(BACKEND_URL+"user/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,10 +35,19 @@ export default function Login({ setLogged }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        toast.success(data.message)
-        document.cookie = `token=${data.token}; max-age=900000; path=/;`;
-        setLogged(true)
-        navigate("/");
+
+        if (data.success) {
+          toast.success(data.message)
+          document.cookie = `token=${data.token}; max-age=900000; path=/;`;
+          setLogged(true)
+          setLoading(false)
+          navigate("/");
+        } else {
+          toast.error(data.message)
+          setLoading(false)
+        }
+
+        
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
@@ -58,7 +69,7 @@ export default function Login({ setLogged }) {
           type="email"
           required
           name="email"
-          className="input input-bordered input-error min-w-[16rem]"
+          className="input input-bordered input-primary min-w-[16rem]"
           value={formData.email}
           onChange={handleChange}
         />
@@ -67,14 +78,14 @@ export default function Login({ setLogged }) {
           required
           name="password"
           type={showPassword ? 'text' : 'password'}
-          className="input input-bordered input-error min-w-[16rem] relative"
+          className="input input-bordered input-primary min-w-[16rem] relative"
           value={formData.password}
           onChange={handleChange}
         />
         <div className="absolute inset-y-0 right-8 flex items-center">
           <button
             type="button"
-            className="text-gray-400 focus:outline-none"
+            className="text-primary focus:outline-none"
             onClick={togglePasswordVisibility}
           >
             {/* Eye icon for show/hide password */}
@@ -90,10 +101,11 @@ export default function Login({ setLogged }) {
           </button>
         </div>
         <button
-          className="btn btn-outline btn-accent"
+          className={loading?"btn btn-outline btn-accent btn-disabled":"btn btn-outline btn-accent"}
           type="submit"
         >
           Login
+          {loading && <span className="loading loading-spinner text-primary loading-xs"></span>}
         </button>
       </form>
     </div>

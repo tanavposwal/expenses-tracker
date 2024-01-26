@@ -1,12 +1,15 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import {API as BACKEND_URL} from "./API"
 
 export default function AddRecord({ reload }) {
   const [transData, setTransData] = useState({
-    amount: 0,
+    amount: "",
     type: "",
     brief: "",
   });
+
+  const [loading, setLoading] = useState(false);
 
   const [isExpense, setExpense] = useState(false);
 
@@ -33,48 +36,43 @@ export default function AddRecord({ reload }) {
     return cookieValue;
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     if (transData.brief != "" || transData.amount != "") {
-      try {
-        const response = await fetch("http://localhost:3000/user/entry", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            token: getToken(),
-          },
-          body: JSON.stringify(transData),
+      setLoading(!loading);
+      fetch(BACKEND_URL + "user/entry", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          token: getToken(),
+        },
+        body: JSON.stringify(transData),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          toast.success(data.message);
+          setTransData({
+            amount: "",
+            type: "",
+            brief: "",
+          });
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
         });
-
-        let data = await response.json();
-        toast.success(data.message);
-        setTransData({
-          amount: "",
-          type: "",
-          brief: "",
-        });
-      } catch (error) {
-        console.error("Error submitting form:", error);
-      }
-
-      reload();
+        reload();
     } else {
       toast.error("No entry made");
     }
   };
 
   return (
-    <form
-      onSubmit={(e) => e.preventDefault()}
-      className="card flex  card-bordered p-5"
-    >
+    <form className="card flex card-bordered sm:p-5 p-2" onSubmit={handleSubmit}>
       <div className="flex w-full">
-        <label className="flex-1 md:pr-6 sm:pr-3 pr-2 form-control">
-          <div className="label">
-            {isExpense ? (
-              <span className="label-text">Expense</span>
-            ) : (
-              <span className="label-text">Income</span>
-            )}
+        <label className="flex-1 md:pr-6 sm:pr-3 pr-1 form-control">
+          <div className="label py-0">
+            <span className="label-text">Detail...</span>
           </div>
           <input
             type="text"
@@ -88,7 +86,7 @@ export default function AddRecord({ reload }) {
         </label>
 
         <label className="form-control">
-          <div className="label">
+          <div className="label py-0">
             <span className="label-text">Amount...</span>
           </div>
           <input
@@ -97,27 +95,39 @@ export default function AddRecord({ reload }) {
             autoComplete="off"
             value={transData.amount}
             onChange={handleChange}
-            className="input input-accent input-sm input-bordered w-full"
+            className="input input-accent input-sm input-bordered sm:w-full w-24"
           />
           <div className="label"></div>
         </label>
       </div>
 
-      <div className="flex items-center w-full">
-        <div className="flex-1 items-center justify-center">
-          <input
-            type="checkbox"
-            className="toggle toggle-accent"
-            checked={isExpense}
-            onChange={handleToggle}
-          />
+      <div className="flex  items-center justify-center w-full">
+        <div className="flex-1">
+          <div className="flex h-fit">
+            <input
+              type="checkbox"
+              className="toggle toggle-primary"
+              checked={isExpense}
+              onChange={handleToggle}
+            />
+            <div className="ml-3 p-0 ">
+              {isExpense ? <span>Expense</span> : <span>Income</span>}
+            </div>
+          </div>
         </div>
 
         <button
           onClick={handleSubmit}
-          className="btn btn-outline btn-primary btn-sm"
+          className={
+            loading
+              ? "btn btn-outline btn-primary btn-sm btn-disabled"
+              : "btn btn-outline btn-primary btn-sm"
+          }
         >
           add
+          {loading && (
+            <span className="loading loading-xs loading-spinner text-error"></span>
+          )}
         </button>
       </div>
     </form>

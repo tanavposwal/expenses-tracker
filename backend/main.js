@@ -87,7 +87,7 @@ app.post('/user/entry', authenticateJwt, async (req, res) => {
   user.transaction.push({ amount: parseInt(amount), type, brief, date })
 
   await user.save();
-  res.json({ message: type+' added successfully' });
+  res.json({ message: type+' added successfully', success: true });
 });
 
 app.delete('/user/entry/:id', authenticateJwt, async (req,res) => {
@@ -103,13 +103,13 @@ app.delete('/user/entry/:id', authenticateJwt, async (req,res) => {
             return true
           }
         })
+        res.json({ message: 'Transaction deleted!', success: true});
         await user.save()
       }
     } catch (error) {
       console.error(error);
     }
 
-  res.json({ message: req.params.id+' deleted!' });
 })
 
-app.listen(3000, () => console.log('Server running on port http://localhost:3000/'));
+app.listen(3000, () => console.log('Server running on port'));
