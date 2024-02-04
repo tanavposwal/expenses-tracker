@@ -61,7 +61,7 @@ export default function Login({ setLogged }) {
         Log in
       </div>
       <form
-        className="mt-16 flex flex-col p-5 card card-bordered gap-4 w-fit"
+        className="mt-16 flex flex-col p-5 card border-gray-400 card-bordered gap-4 w-fit"
         onSubmit={handleSubmit}
       >
         <input

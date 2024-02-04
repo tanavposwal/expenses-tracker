@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Toaster } from 'react-hot-toast';
+import {API as BACKEND_URL} from "./components/API"
 import Home from "./components/Home";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
@@ -23,11 +24,23 @@ function App() {
   };
 
   useEffect(()=>{
-    if(getToken() != ""){
-      setLogged(true)
-    } else {
-      setLogged(false)
-    }
+    fetch(BACKEND_URL+"verify/"+getToken(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          setLogged(true)
+        } else {
+          setLogged(false)
+        }       
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   })
 
   return (

@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 import jwt from "jsonwebtoken";
-import { authenticateJwt } from "./middleware/token.js";
+import { authenticateJwt, verifyToken } from "./middleware/token.js";
 
 const signupInput = z.object({
   fullname: z.string().min(1).max(20),
@@ -90,6 +90,10 @@ app.post('/user/entry', authenticateJwt, async (req, res) => {
   res.json({ message: type+' added successfully', success: true });
 });
 
+app.get('/verify/:token', (req, res) => {
+  res.json({ user: verifyToken(req.params.token) })
+})
+
 app.delete('/user/entry/:id', authenticateJwt, async (req,res) => {
 
     try {
@@ -112,4 +116,4 @@ app.delete('/user/entry/:id', authenticateJwt, async (req,res) => {
 
 })
 
-app.listen(3000, () => console.log('Server running on port'));
+app.listen(3000, () => console.log('Server running on port 3000'));

@@ -56,19 +56,20 @@ export default function AddRecord({ reload }) {
             type: "",
             brief: "",
           });
+          reload();
           setLoading(false);
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
         });
-        reload();
+        
     } else {
       toast.error("No entry made");
     }
   };
 
   return (
-    <form className="card flex card-bordered sm:p-5 p-2" onSubmit={handleSubmit}>
+    <form className="card border-gray-400 flex card-bordered sm:p-5 p-2" onSubmit={handleSubmit}>
       <div className="flex w-full">
         <label className="flex-1 md:pr-6 sm:pr-3 pr-1 form-control">
           <div className="label py-0">

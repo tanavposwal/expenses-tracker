@@ -78,7 +78,7 @@ export default function Signup() {
       </div>
       <form
         onSubmit={handleSubmit}
-        className="mt-16 flex flex-col border p-5 card card-bordered w-fit gap-4"
+        className="mt-16 flex flex-col border p-5 card border-gray-400 card-bordered w-fit gap-4"
       >
         <input
           placeholder="Full name"

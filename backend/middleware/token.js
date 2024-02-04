@@ -20,3 +20,12 @@ export const authenticateJwt = (req, res, next) => {
       res.sendStatus(401);
     }
   };
+
+export const verifyToken = (token) => {
+  jwt.verify(token, SECRET, (err, user) => {
+    if (err) {
+      return false;
+    }
+    return user;
+  });
+}

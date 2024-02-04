@@ -48,12 +48,12 @@ export default function Home() {
     <div>
       <div className="w-screen md:px-10 sm:px-6 px-3 flex flex-col gap-3 mb-5">
         <AddRecord reload={getTransac} />
-        <div className="card card-bordered p-3">
+        <div className="card border-gray-400 card-bordered p-3">
           {loading ? (
             <div className="w-full flex items-center justify-center">
             <span className="loading loading-bars loading-sm"></span>
             </div>
-          ) : transaction.length != 0 ? (
+          ) : (transaction.length != 0 ? (
             [...transaction]
               .reverse()
               .map((trans, id) => (
@@ -67,11 +67,11 @@ export default function Home() {
               ))
           ) : (
             <div className="flex w-full items-center justify-center">
-              <div className="text-2xl mt-6 border-b-8 pb-3 border-gray-600 font-black">
+              <div className="text-2xl my-6 border-b-8 pb-3 border-gray-600 font-black">
                 Add a transaction
               </div>
             </div>
-          )}
+          ))}
         </div>
       </div>
     </div>

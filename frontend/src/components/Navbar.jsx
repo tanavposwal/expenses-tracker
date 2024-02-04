@@ -5,7 +5,8 @@ export default function Home({ logged }) {
     <div className="navbar fixed top-0 z-[999] bg-base-100 shadow-lg">
       <div className="flex-1 sm:pl-6 pl-2">
         <Link to="/" className="btn btn-ghost text-xl">
-          Expense-tracker
+          <img className="h-8" src="../../../public/spending.png" />
+          Expense Tracker
         </Link>
       </div>
       <div className="flex-none">
