@@ -22,9 +22,11 @@ export const authenticateJwt = (req, res, next) => {
   };
 
 export const verifyToken = (token) => {
-  let email;
+  let email = "";
   jwt.verify(token, SECRET, (err, user) => {
-    email = user.email;
+    if (user.email) {
+      email = user.email;
+    }
   });
   return email
 }
