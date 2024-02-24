@@ -13,7 +13,7 @@ export default function Record(props) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          "token": props.token()
+          "token": localStorage.getItem("token")
         },
       });
 

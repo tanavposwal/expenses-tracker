@@ -26,16 +26,6 @@ export default function AddRecord({ reload }) {
     }
   };
 
-  const getToken = () => {
-    const cookieName = "token";
-    const cookieValue = document.cookie
-      .split(";")
-      .map((cookie) => cookie.trim())
-      .find((cookie) => cookie.startsWith(`${cookieName}=`))
-      ?.split("=")[1];
-    return cookieValue;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (transData.brief != "" || transData.amount != "") {
@@ -44,7 +34,7 @@ export default function AddRecord({ reload }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          token: getToken(),
+          token: localStorage.getItem("token"),
         },
         body: JSON.stringify(transData),
       })

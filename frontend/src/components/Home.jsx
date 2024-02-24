@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import Record from "./Record";
 import AddRecord from "./AddRecord";
 import {API as BACKEND_URL} from "./API"
+import { transactionState } from "../atom/atom";
+import { useRecoilState } from "recoil"
 
 export default function Home() {
-  const [transaction, setTransaction] = useState([]);
-
+  const [transaction, setTransaction] = useRecoilState(transactionState);
   const [loading, setLoading] = useState(false);
 
   const getTransac = async () => {
@@ -15,7 +16,7 @@ export default function Home() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        token: getToken(),
+        token: localStorage.getItem("token"),
       }
     })
       .then((response) => response.json())
@@ -28,16 +29,6 @@ export default function Home() {
         console.error("Error submitting form:", error);
       });
 
-  };
-
-  const getToken = () => {
-    const cookieName = "token";
-    const cookieValue = document.cookie
-      .split(";")
-      .map((cookie) => cookie.trim())
-      .find((cookie) => cookie.startsWith(`${cookieName}=`))
-      ?.split("=")[1];
-    return cookieValue;
   };
 
   useEffect(() => {
@@ -59,7 +50,6 @@ export default function Home() {
               .map((trans, id) => (
                 <Record
                   key={id}
-                  token={getToken}
                   data={trans}
                   id={transaction.length - id - 1}
                   reload={getTransac}

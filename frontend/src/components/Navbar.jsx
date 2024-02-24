@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
+import { loginState } from "../atom/atom";
+import { useRecoilState } from "recoil";
 
-export default function Home({ logged }) {
+export default function Home() {
+  const [logged, setLogged] = useRecoilState(loginState)
+
   return (
     <div className="navbar fixed top-0 z-[999] bg-base-100 shadow-lg">
       <div className="flex-1 sm:pl-6 pl-2">

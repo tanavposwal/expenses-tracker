@@ -22,10 +22,9 @@ export const authenticateJwt = (req, res, next) => {
   };
 
 export const verifyToken = (token) => {
+  let email;
   jwt.verify(token, SECRET, (err, user) => {
-    if (err) {
-      return false;
-    }
-    return user;
+    email = user.email;
   });
+  return email
 }

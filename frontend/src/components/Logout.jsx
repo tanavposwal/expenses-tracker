@@ -1,11 +1,14 @@
 import { useEffect } from "react"
 import { useNavigate } from "react-router-dom";
+import { loginState } from "../atom/atom";
+import { useRecoilState } from "recoil";
 
-export default function Logout({ logged, setLogged }) {
+export default function Logout() {
     const navigate = useNavigate();
+    const [logged, setLogged] = useRecoilState(loginState)
 
     useEffect(() => {
-        document.cookie = `token=; max-age=900000; path=/;`;
+        localStorage.setItem("token", "")
         setLogged(!logged)
         navigate("/")
     })

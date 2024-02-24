@@ -2,9 +2,12 @@ import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import {API as BACKEND_URL} from "./API"
+import { useRecoilState } from 'recoil';
+import { loginState } from "../atom/atom";
 
-export default function Login({ setLogged }) {
+export default function Login() {
   const navigate = useNavigate();
+  const [logged, setLogged] = useRecoilState(loginState)
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false)
   const togglePasswordVisibility = () => {
@@ -38,7 +41,7 @@ export default function Login({ setLogged }) {
 
         if (data.success) {
           toast.success(data.message)
-          document.cookie = `token=${data.token}; max-age=900000; path=/;`;
+          localStorage.setItem("token", data.item)
           setLogged(true)
           setLoading(false)
           navigate("/");
