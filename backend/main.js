@@ -24,6 +24,10 @@ const signupInput = z.object({
 	password: z.string().min(8).max(20)
 })
 
+app.get('/', (req, res) => {
+	res.send("hello form expense tracker api!!")
+})
+
 // User routes
 app.post('/user/signup', async (req, res) => {
 	const parsedInput = signupInput.safeParse(req.body)
