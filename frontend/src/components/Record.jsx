@@ -13,7 +13,7 @@ export default function Record(props) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
           "token": localStorage.getItem("token")
         },
       });

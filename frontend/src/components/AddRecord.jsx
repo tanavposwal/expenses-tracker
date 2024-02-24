@@ -34,7 +34,7 @@ export default function AddRecord({ reload }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
           token: localStorage.getItem("token"),
         },
         body: JSON.stringify(transData),

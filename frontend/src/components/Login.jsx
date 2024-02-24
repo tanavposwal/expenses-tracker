@@ -32,7 +32,7 @@ export default function Login() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
         email: formData.email,
         password: formData.password,
       },
