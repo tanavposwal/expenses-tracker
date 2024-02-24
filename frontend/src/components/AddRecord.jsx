@@ -37,6 +37,7 @@ export default function AddRecord({ reload }) {
           'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
           token: localStorage.getItem("token"),
         },
+        mode: 'no-cors',
         body: JSON.stringify(transData),
       })
         .then((response) => response.json())

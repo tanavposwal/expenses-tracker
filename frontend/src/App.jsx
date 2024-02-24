@@ -22,6 +22,7 @@ function App() {
         "Content-Type": "application/json",
         'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
       },
+      mode: 'no-cors',
     })
       .then((response) => response.json())
       .then((data) => {

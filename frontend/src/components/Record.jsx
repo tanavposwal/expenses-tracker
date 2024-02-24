@@ -16,6 +16,7 @@ export default function Record(props) {
           'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
           "token": localStorage.getItem("token")
         },
+        mode: 'no-cors'
       });
 
       let data = await response.json()

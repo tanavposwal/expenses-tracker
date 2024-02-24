@@ -34,6 +34,7 @@ export default function Signup() {
         "Content-Type": "application/json",
         'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
       },
+      mode: 'no-cors',
       body: JSON.stringify(formData),
     })
       .then((response) => response.json())

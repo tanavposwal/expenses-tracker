@@ -36,6 +36,7 @@ export default function Login() {
         email: formData.email,
         password: formData.password,
       },
+      mode: 'no-cors'
     })
       .then((response) => response.json())
       .then((data) => {
