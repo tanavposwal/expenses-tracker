@@ -9,10 +9,11 @@ import Signup from "./components/Signup";
 import Guest from "./components/Guest";
 import Logout from "./components/Logout";
 import { useRecoilState } from 'recoil';
-import { loginState } from "./atom/atom"
+import { loginState, emailState } from "./atom/atom"
 
 function App() {
   const [logged, setLogged] = useRecoilState(loginState);
+  const [email, setEmail] = useRecoilState(emailState);
 
   useEffect(()=>{
     fetch(BACKEND_URL+"verify/"+localStorage.getItem("token"), {
@@ -25,8 +26,10 @@ function App() {
       .then((data) => {
         if (data) {
           setLogged(true)
+          setEmail(data)
         } else {
           setLogged(false)
+          setEmail("")
         }       
       })
       .catch((error) => {

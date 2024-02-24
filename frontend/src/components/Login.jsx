@@ -41,7 +41,7 @@ export default function Login() {
 
         if (data.success) {
           toast.success(data.message)
-          localStorage.setItem("token", data.item)
+          localStorage.setItem("token", data.token)
           setLogged(true)
           setLoading(false)
           navigate("/");
