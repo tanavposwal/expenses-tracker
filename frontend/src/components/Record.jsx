@@ -13,6 +13,7 @@ export default function Record(props) {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*',
           "token": localStorage.getItem("token")
         },
       });

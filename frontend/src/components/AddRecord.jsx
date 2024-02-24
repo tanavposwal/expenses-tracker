@@ -34,6 +34,7 @@ export default function AddRecord({ reload }) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*',
           token: localStorage.getItem("token"),
         },
         body: JSON.stringify(transData),
