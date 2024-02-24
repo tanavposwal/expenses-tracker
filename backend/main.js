@@ -11,7 +11,9 @@ const SECRET = process.env.SECRET;
 export const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ 
+	origin : ['https://expenses-trackr.vercel.app/'], 
+ } ));
 
 import jwt from "jsonwebtoken";
 import { authenticateJwt, verifyToken } from "./middleware/token.js";
