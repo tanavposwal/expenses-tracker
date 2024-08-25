@@ -16,27 +16,28 @@ function App() {
   const [email, setEmail] = useRecoilState(emailState);
 
   useEffect(()=>{
-    fetch(BACKEND_URL+"verify/"+localStorage.getItem("token"), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
-      },
-      mode: 'no-cors',
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data) {
-          setLogged(true)
-          setEmail(data)
-        } else {
-          setLogged(false)
-          setEmail("")
-        }       
+    if (localStorage.getItem("token"))
+      fetch(BACKEND_URL+"verify/"+localStorage.getItem("token"), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
+        },
+        mode: 'no-cors',
       })
-      .catch((error) => {
-        console.error(error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            setLogged(true)
+            setEmail(data)
+          } else {
+            setLogged(false)
+            setEmail("")
+          }       
+        })
+        .catch((error) => {
+          console.error(error);
+        });
   })
 
   return (

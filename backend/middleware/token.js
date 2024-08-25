@@ -19,14 +19,13 @@ export const authenticateJwt = (req, res, next) => {
     } else {
       res.sendStatus(401);
     }
-  };
+};
 
 export const verifyToken = (token) => {
-  let email = "";
-  jwt.verify(token, SECRET, (err, user) => {
-    if (user.email) {
-      email = user.email;
-    }
-  });
-  return email
-}
+  try {
+    const user = jwt.verify(token, SECRET);
+    return user.email || "";
+  } catch (err) {
+    return "";
+  }
+};

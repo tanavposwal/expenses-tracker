@@ -16,10 +16,8 @@ export default function Home() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
         token: localStorage.getItem("token"),
       },
-      mode: 'no-cors'
     })
       .then((response) => response.json())
       .then((data) => {
