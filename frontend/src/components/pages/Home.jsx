@@ -1,5 +1,5 @@
-import AddRecord from "./transactions/AddRecord";
-import Record from "./transactions/Record";
+import AddRecord from "../transactions/AddRecord";
+import Record from "../transactions/Record";
 import { useTransactions } from "../../hooks/useTransactions.js";
 
 export default function Home() {

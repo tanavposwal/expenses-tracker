@@ -4,17 +4,17 @@ import { QueryClient } from '@tanstack/react-query';
 export const queryKeys = {
     // User related queries
     user: {
-        all: ['user'] as const,
-        verify: (token: string) => [...queryKeys.user.all, 'verify', token] as const,
+        all: ['user'],
+        verify: (token) => [...queryKeys.user.all, 'verify', token],
     },
 
     // Transaction related queries
     transactions: {
-        all: ['transactions'] as const,
-        list: () => [...queryKeys.transactions.all, 'list'] as const,
-        detail: (id: string) => [...queryKeys.transactions.all, 'detail', id] as const,
+        all: ['transactions'],
+        list: () => [...queryKeys.transactions.all, 'list'],
+        detail: (id) => [...queryKeys.transactions.all, 'detail', id],
     },
-} as const;
+};
 
 // Query Client Configuration
 export const queryClient = new QueryClient({
@@ -25,7 +25,7 @@ export const queryClient = new QueryClient({
             gcTime: 10 * 60 * 1000, // 10 minutes (formerly cacheTime)
 
             // Retry configuration
-            retry: (failureCount, error: any) => {
+            retry: (failureCount, error) => {
                 // Don't retry on 401/403 errors
                 if (error?.response?.status === 401 || error?.response?.status === 403) {
                     return false;

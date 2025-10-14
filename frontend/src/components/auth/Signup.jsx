@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignup } from "../../hooks/useAuth.js";
-import { validateForm } from "../../utils/helpers.js";
+import { validateForm, showToast } from "../../utils/helpers.js";
 
 export default function Signup() {
     const navigate = useNavigate();

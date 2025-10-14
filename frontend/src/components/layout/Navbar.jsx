@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
-import { loginState, emailState } from "../store/atoms.js";
-import { storage } from "../utils/helpers.js";
+import { loginState, emailState } from "../../store/atoms.js";
+import { storage } from "../../utils/helpers.js";
 
 export default function Navbar() {
   const [logged, setLogged] = useRecoilState(loginState);
@@ -19,7 +19,7 @@ export default function Navbar() {
           💰 Expense Tracker
         </a>
       </div>
-      
+
       <div className="flex-none">
         {logged ? (
           <div className="dropdown dropdown-end">
