@@ -2,11 +2,12 @@ import { useState } from "react";
 import toast from 'react-hot-toast';
 import { useNavigate } from "react-router-dom";
 import {API as BACKEND_URL} from "./API"
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios"
 
 export default function Signup() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false)
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -24,46 +25,33 @@ export default function Signup() {
     setFormData({ ...formData, [name]: value });
   };
 
+  const signUp = useMutation({
+    mutationKey: ["signUp"],
+    mutationFn: async () => {
+      console.log("post request")
+      return await axios.post(BACKEND_URL+"user/signup", formData)
+    },
+    onSuccess: ({ data }) => { 
+      if (data.success) {
+        toast.success(data.message);
+        setFormData({
+          fullname: "",
+          email: "",
+          password: "",
+          confirmpass: "",
+        })
+        navigate('/login');
+      } else {
+        toast.error(data.message);
+      }
+    }
+  })
+
   const handleSubmit = (e) => {
-    setLoading(true)
     e.preventDefault();
     if (formData.password == formData.confirmpass) {  
-    fetch(BACKEND_URL+"user/signup", {
-      method: "POST",
-      body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        
-        if (data.success) {
-          toast.success(data.message);
-          setFormData({
-            fullname: "",
-            email: "",
-            password: "",
-            confirmpass: "",
-          })
-          setLoading(false)
-          navigate('/');
-        } else {
-          toast.error(data.message);
-          setFormData({
-            fullname: "",
-            email: "",
-            password: "",
-            confirmpass: "",
-          })
-          setLoading(false)
-        }
-        
-        
-      })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-        // Handle errors
-      });
+      signUp.mutate();
     } else {
-      setLoading(false)
       toast.error("Password no matched")
     }
   };
@@ -133,10 +121,11 @@ export default function Signup() {
         />
         <button
           type="submit"
-          className={loading?"btn btn-outline btn-accent btn-disabled":"btn btn-outline btn-accent"}
+          disabled={signUp.isPending}
+          className="btn btn-accent text-white"
         >
+          {signUp.isPending && <span className="loading loading-spinner loading-xs"></span>}
           Signin
-          {loading && <span className="loading loading-spinner text-primary loading-xs"></span>}
         </button>
       </form>
     </div>

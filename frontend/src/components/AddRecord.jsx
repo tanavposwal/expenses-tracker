@@ -1,6 +1,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import {API as BACKEND_URL} from "./API"
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
 
 export default function AddRecord({ reload }) {
   const [transData, setTransData] = useState({
@@ -8,8 +10,6 @@ export default function AddRecord({ reload }) {
     type: "",
     brief: "",
   });
-
-  const [loading, setLoading] = useState(false);
 
   const [isExpense, setExpense] = useState(false);
 
@@ -26,35 +26,30 @@ export default function AddRecord({ reload }) {
     }
   };
 
+  const createTransaction = useMutation({
+    mutationKey: ["createTransaction"],
+    mutationFn: async () => {
+      return await axios.post(BACKEND_URL + "user/entry", transData, {
+        headers: {
+          token: localStorage.getItem("token"),
+        },
+      })
+    },
+    onSuccess: ({ data }) => {
+      toast.success(data.message);
+      setTransData({
+        amount: "",
+        type: "",
+        brief: "",
+      });
+      reload();
+    }
+  })
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     if (transData.brief != "" || transData.amount != "") {
-      setLoading(!loading);
-      fetch(BACKEND_URL + "user/entry", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
-          token: localStorage.getItem("token"),
-        },
-        mode: 'no-cors',
-        body: JSON.stringify(transData),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          toast.success(data.message);
-          setTransData({
-            amount: "",
-            type: "",
-            brief: "",
-          });
-          reload();
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-        });
-        
+      createTransaction.mutate();
     } else {
       toast.error("No entry made");
     }
@@ -112,15 +107,15 @@ export default function AddRecord({ reload }) {
         <button
           onClick={handleSubmit}
           className={
-            loading
+            createTransaction.isPending
               ? "btn btn-outline btn-primary btn-sm btn-disabled"
               : "btn btn-outline btn-primary btn-sm"
           }
         >
-          add
-          {loading && (
+          {createTransaction.isPending && (
             <span className="loading loading-xs loading-spinner text-error"></span>
           )}
+          add
         </button>
       </div>
     </form>

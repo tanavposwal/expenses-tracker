@@ -4,12 +4,17 @@ import { useNavigate } from "react-router-dom";
 import {API as BACKEND_URL} from "./API"
 import { useRecoilState } from 'recoil';
 import { loginState } from "../atom/atom";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+
+// asfasdf23423
+// asdf@asdf.com
 
 export default function Login() {
   const navigate = useNavigate();
   const [logged, setLogged] = useRecoilState(loginState)
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false)
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -24,40 +29,32 @@ export default function Login() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
-    setLoading(true)
-    e.preventDefault();
-
-    fetch(BACKEND_URL+"user/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
-        email: formData.email,
-        password: formData.password,
-      },
-      mode: 'no-cors'
-    })
-      .then((response) => response.json())
-      .then((data) => {
-
-        if (data.success) {
-          toast.success(data.message)
-          localStorage.setItem("token", data.token)
-          setLogged(true)
-          setLoading(false)
-          navigate("/");
-        } else {
-          toast.error(data.message)
-          setLoading(false)
-        }
-
-        
+  const logIn = useMutation({
+    mutationKey: ["logIn"],
+    mutationFn: async () => {
+      console.log("post request")
+      return await axios.post(BACKEND_URL+"user/login", {}, {
+        headers: {
+          email: formData.email,
+          password: formData.password
+        },
       })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-        // Handle errors
-      });
+    },
+    onSuccess: ({ data }) => { 
+      if (data.success) {
+        toast.success(data.message)
+        localStorage.setItem("token", data.token)
+        setLogged(true)
+        navigate("/");
+      } else {
+        toast.error(data.message)
+      }
+    }
+  })
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    logIn.mutate();
   };
 
   return (
@@ -106,11 +103,12 @@ export default function Login() {
           </button>
         </div>
         <button
-          className={loading?"btn btn-outline btn-accent btn-disabled":"btn btn-outline btn-accent"}
           type="submit"
+          disabled={logIn.isPending}
+          className="btn btn-accent text-white"
         >
+          {logIn.isPending && <span className="loading loading-spinner loading-xs"></span>}
           Login
-          {loading && <span className="loading loading-spinner text-primary loading-xs"></span>}
         </button>
       </form>
     </div>

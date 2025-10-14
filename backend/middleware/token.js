@@ -3,22 +3,22 @@ import { config } from 'dotenv';
 
 config();
 
-const SECRET = process.env.SECRET;
+const SECRET = process.env.SECRET || "secret";
 
 export const authenticateJwt = (req, res, next) => {
-    const authHeader = req.headers.token;
-    if (authHeader) {
-      const token = authHeader;
-      jwt.verify(token, SECRET, (err, user) => {
-        if (err) {
-          return res.sendStatus(403);
-        }
-        req.user = user;
-        next();
-      });
-    } else {
-      res.sendStatus(401);
-    }
+  const authHeader = req.headers.token;
+  if (authHeader) {
+    const token = authHeader;
+    jwt.verify(token, SECRET, (err, user) => {
+      if (err) {
+        return res.sendStatus(403);
+      }
+      req.user = user;
+      next();
+    });
+  } else {
+    res.sendStatus(401);
+  }
 };
 
 export const verifyToken = (token) => {

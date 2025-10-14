@@ -1,28 +1,36 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
-import {API as BACKEND_URL} from "./API"
+import { API as BACKEND_URL } from "./API"
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function Record(props) {
 
   const [loading, setLoading] = useState(false)
 
+  const deleteTransaction = useMutation({
+    mutationKey: ["editTransaction"],
+    mutationFn: async () => {
+      const res = await axios.delete(BACKEND_URL + "user/entry/" + props.id, {
+        amount: props.data.amount,
+        brief: props.data.brief,
+        date: props.data.date,
+        type: props.data.type
+      }, {
+        headers: {
+          "token": localStorage.getItem("token")
+        }
+      })
+
+      toast.success(res.data.message)
+      props.reload()
+    },
+  })
+
   const handleDelete = async () => {
     setLoading(true)
     try {
-      const response = await fetch(BACKEND_URL+"user/entry/"+props.id, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
-          "token": localStorage.getItem("token")
-        },
-        mode: 'no-cors'
-      });
-
-      let data = await response.json()
-      toast.success(data.message)
-      props.reload()
-      setLoading(true)
+      deleteTransaction.mutate()
     } catch (error) {
       console.error(error);
       setLoading(true)
@@ -36,34 +44,34 @@ export default function Record(props) {
         <span className="text-lg py-0">{props.data.brief}</span>
       </div>
       <span className="py-1">₹</span>
-      
+
       {props.data.type != "expense" ? (
         <div className="flex gap-2">
           <span className="flex justify-center font-black text-black items-center md:w-20 w-16 bg-red-300">0</span>
           <span className="flex justify-center font-black text-black items-center md:w-20 w-16 bg-green-300">{props.data.amount}</span>
         </div>
-        ) : (
+      ) : (
         <div className="flex gap-2">
           <span className="flex justify-center font-black text-black items-center md:w-20 w-16 bg-red-300">{props.data.amount}</span>
           <span className="flex justify-center font-black text-black items-center md:w-20 w-16 bg-green-300">0</span>
         </div>
-      ) }
-      
+      )}
+
       <div className="relative flex flex-col items-center justify-center">
-      
-      <div className="dropdown dropdown-bottom dropdown-end">
-  <div tabIndex={0} role="button" className="btn btn-sm m-1 p-1"><Menu /></div>
-  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-    <li>
-      <button onClick={handleDelete} className={loading ? "btn-disabled" : "active:bg-base-600"}>
-      Delete
-      {loading && <span className="loading loading-spinner text-accent loading-xs"></span>}
-      </button>
-    </li>
-  </ul>
-</div>
-  </div>
+
+        <div className="dropdown dropdown-bottom dropdown-end">
+          <div tabIndex={0} role="button" className="btn btn-sm m-1 p-1"><Menu /></div>
+          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+            <li>
+              <button onClick={handleDelete} className={loading ? "btn-disabled" : "active:bg-base-600"}>
+                Delete
+                {loading && <span className="loading loading-spinner text-accent loading-xs"></span>}
+              </button>
+            </li>
+          </ul>
+        </div>
       </div>
+    </div>
   );
 }
 

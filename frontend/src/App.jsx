@@ -10,34 +10,26 @@ import Guest from "./components/Guest";
 import Logout from "./components/Logout";
 import { useRecoilState } from 'recoil';
 import { loginState, emailState } from "./atom/atom"
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 function App() {
   const [logged, setLogged] = useRecoilState(loginState);
   const [email, setEmail] = useRecoilState(emailState);
 
-  useEffect(()=>{
-    if (localStorage.getItem("token"))
-      fetch(BACKEND_URL+"verify/"+localStorage.getItem("token"), {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Origin': 'https://expenses-tracker-backend-l521.onrender.com/',
-        },
-        mode: 'no-cors',
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data) {
-            setLogged(true)
-            setEmail(data)
-          } else {
-            setLogged(false)
-            setEmail("")
-          }       
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+  const { data, isLoading, isError} = useQuery({
+    queryKey: ["getEmail"],
+    queryFn: async () => {
+      const res = await axios.get(BACKEND_URL+"verify/"+localStorage.getItem("token"))  
+      if (res.data) {
+        setEmail(res.data)
+        setLogged(true)
+      } else {
+        setEmail("")
+        setLogged(false)
+      }
+      return res.data
+    }
   })
 
   return (
@@ -47,6 +39,11 @@ function App() {
         position="bottom-right"
         reverseOrder={false} />
         <Navbar />
+        {isLoading &&  
+          <div className="w-full flex items-center justify-center">
+            <span className="loading loading-bars loading-sm"></span>
+          </div>
+        }
         <br />
         <br />
         <br />
